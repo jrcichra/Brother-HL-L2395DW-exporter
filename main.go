@@ -235,6 +235,7 @@ func main() {
 
 	address := flag.String("address", "10.0.0.3", "IP address of the brother printer")
 	csvURL := flag.String("csvURL", "etc/mnt_info.csv", "Path for the csv file on the printer")
+	listen := flag.String("listen", ":9101", "listen addr for prometheus to serve metrics on")
 	timeout := flag.Int("timeout", 10, "context timeout for HTTP call")
 	flag.Parse()
 
@@ -243,6 +244,6 @@ func main() {
 	prometheus.MustRegister(b)
 
 	http.Handle("/metrics", promhttp.Handler())
-	log.Println("Beginning to serve on port :8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Println("Beginning to serve on port " + *listen)
+	log.Fatal(http.ListenAndServe(*listen, nil))
 }
